@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 function ImageCard({ file, index }) {
   const [status, setStatus] = useState("pending");
   const [output, setOutput] = useState(null);
   const [bgColor, setBgColor] = useState("#ffffff");
+  const imgRef = useRef(null);
 
   const handleProcess = async () => {
     setStatus("processing");
@@ -32,6 +33,33 @@ function ImageCard({ file, index }) {
       console.error("Error:", error);
       setStatus("error");
     }
+  };
+
+  const handleDownload = async () => {
+    if (!output) return;
+
+    const img = imgRef.current;
+    if (!img.complete) {
+      await new Promise((resolve) => (img.onload = resolve));
+    }
+
+    const canvas = document.createElement("canvas");
+    canvas.width = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+    const ctx = canvas.getContext("2d");
+
+    // Fill background color
+    ctx.fillStyle = bgColor;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Draw the processed image on top
+    ctx.drawImage(img, 0, 0);
+
+    // Convert canvas to image and download
+    const link = document.createElement("a");
+    link.download = `processed-${index + 1}.png`;
+    link.href = canvas.toDataURL("image/png");
+    link.click();
   };
 
   return (
@@ -74,6 +102,7 @@ function ImageCard({ file, index }) {
                 style={{ backgroundColor: bgColor }}
               >
                 <img
+                  ref={imgRef}
                   src={output}
                   alt="Processed"
                   className="max-w-full max-h-full object-contain"
@@ -91,14 +120,13 @@ function ImageCard({ file, index }) {
                 />
               </div>
 
-              {/* Download */}
-              <a
-                href={output}
-                download={`processed-${index + 1}.png`}
+              {/* Download with BG */}
+              <button
+                onClick={handleDownload}
                 className="px-5 py-2 bg-green-500 text-white rounded-lg shadow-lg hover:bg-green-600 transition"
               >
                 Download
-              </a>
+              </button>
             </>
           )}
 
@@ -112,6 +140,3 @@ function ImageCard({ file, index }) {
 }
 
 export default ImageCard;
-
-
-
