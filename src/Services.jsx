@@ -18,6 +18,7 @@ import {
   UserCheck,
   Wifi
 } from "lucide-react";
+import JobApplyCard from "./JobApplyCard";
 const mainServices = [
   {
     icon: <CreditCard className="w-10 h-10 text-white" />,
@@ -129,6 +130,7 @@ const pressServices = [
 export default function Services() {
   return (
     <>
+    
       <section className="py-10 bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50">
         {/* 🔹 Marquee */}
         <div className="overflow-hidden border-y py-2 bg-white shadow relative">
@@ -147,6 +149,8 @@ export default function Services() {
             </span>
           </div>
         </div>
+
+        <JobApplyCard/>
 
         {/* 🔹 Main Services */}
         <h2 className="text-3xl sm:text-4xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 pt-6 pb-8">

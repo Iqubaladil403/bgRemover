@@ -11,6 +11,7 @@ function App() {
   };
 
   return (
+    <>
     <div className="min-h-screen flex flex-col items-center bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 overflow-x-hidden">
       {/* 🔹 Top Scrolling Text */}
       <ScrollingText />
@@ -48,8 +49,10 @@ function App() {
           <ImageCard key={idx} file={file} index={idx} />
         ))}
       </div>
+      
       <Services></Services>
     </div>
+    </>
   );
 }
 

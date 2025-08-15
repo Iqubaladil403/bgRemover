@@ -3,35 +3,55 @@ import { useRef, useState } from "react";
 function ImageCard({ file, index }) {
   const [status, setStatus] = useState("pending");
   const [output, setOutput] = useState(null);
-  const [bgColor, setBgColor] = useState("#ffffff");
+  const [bgColor, setBgColor] = useState(null); // null = transparent
   const imgRef = useRef(null);
+
+  // Multiple API keys
+  const apiKeys = [
+    "Uj88DfLGBMz1Tjd1ox2yoH9j",
+    "DBfjwxArYLQXvCyA3B8FVg3H",
+    "bgMjffwjuwz72UYogNLKo6ok"
+  ];
 
   const handleProcess = async () => {
     setStatus("processing");
 
-    const formData = new FormData();
-    formData.append("image_file", file);
-    formData.append("size", "auto");
+    let success = false;
+    for (let key of apiKeys) {
+      try {
+        const formData = new FormData();
+        formData.append("image_file", file);
+        formData.append("size", "auto");
 
-    try {
-      const response = await fetch("https://api.remove.bg/v1.0/removebg", {
-        method: "POST",
-        headers: {
-          "X-Api-Key": "mdQ5SotQBRWVUhQ1h4i3aXax",
-        },
-        body: formData,
-      });
+        const response = await fetch("https://api.remove.bg/v1.0/removebg", {
+          method: "POST",
+          headers: { "X-Api-Key": key },
+          body: formData,
+        });
 
-      if (!response.ok) throw new Error(await response.text());
+        if (response.status === 402) {
+          console.warn(`Key quota exhausted: ${key}`);
+          continue; // try next key
+        }
 
-      const blob = await response.blob();
-      const outputUrl = URL.createObjectURL(blob);
+        if (!response.ok) throw new Error(await response.text());
 
-      setOutput(outputUrl);
-      setStatus("done");
-    } catch (error) {
-      console.error("Error:", error);
+        const blob = await response.blob();
+        const outputUrl = URL.createObjectURL(blob);
+
+        setOutput(outputUrl);
+        setStatus("done");
+        success = true;
+        break;
+      } catch (error) {
+        console.error(`Error with key ${key}:`, error);
+        // Try the next key
+      }
+    }
+
+    if (!success) {
       setStatus("error");
+      console.error("All API keys exhausted or failed.");
     }
   };
 
@@ -48,9 +68,11 @@ function ImageCard({ file, index }) {
     canvas.height = img.naturalHeight;
     const ctx = canvas.getContext("2d");
 
-    // Fill background color
-    ctx.fillStyle = bgColor;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // Fill only if bgColor is set
+    if (bgColor) {
+      ctx.fillStyle = bgColor;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
 
     // Draw the processed image on top
     ctx.drawImage(img, 0, 0);
@@ -99,7 +121,16 @@ function ImageCard({ file, index }) {
               <h3 className="text-white font-semibold">Processed</h3>
               <div
                 className="w-40 h-40 flex items-center justify-center rounded-xl border-2 border-white/40 shadow-md"
-                style={{ backgroundColor: bgColor }}
+                style={{
+                  backgroundColor: bgColor || "transparent",
+                  backgroundImage: bgColor
+                    ? "none"
+                    : `linear-gradient(45deg,#ccc 25%,transparent 25%),
+                       linear-gradient(-45deg,#ccc 25%,transparent 25%),
+                       linear-gradient(45deg,transparent 75%,#ccc 75%),
+                       linear-gradient(-45deg,transparent 75%,#ccc 75%)`,
+                  backgroundSize: bgColor ? "auto" : "20px 20px"
+                }}
               >
                 <img
                   ref={imgRef}
@@ -114,13 +145,15 @@ function ImageCard({ file, index }) {
                 <label className="text-white font-semibold">BG Color:</label>
                 <input
                   type="color"
-                  value={bgColor}
-                  onChange={(e) => setBgColor(e.target.value)}
+                  value={bgColor || "#ffffff"}
+                  onChange={(e) =>
+                    setBgColor(e.target.value === "#ffffff" ? null : e.target.value)
+                  }
                   className="w-12 h-10 border rounded cursor-pointer"
                 />
               </div>
 
-              {/* Download with BG */}
+              {/* Download */}
               <button
                 onClick={handleDownload}
                 className="px-5 py-2 bg-green-500 text-white rounded-lg shadow-lg hover:bg-green-600 transition"
@@ -131,7 +164,9 @@ function ImageCard({ file, index }) {
           )}
 
           {status === "error" && (
-            <p className="text-red-200 font-semibold">Failed to process</p>
+            <p className="text-red-200 font-semibold">
+              Failed to process — all API keys may be exhausted.
+            </p>
           )}
         </div>
       </div>
