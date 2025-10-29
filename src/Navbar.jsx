@@ -9,9 +9,7 @@ const Navbar = () => {
 
   // Change background on scroll
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -25,25 +23,25 @@ const Navbar = () => {
     <nav
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-black/90 backdrop-blur-md shadow-lg"
-          : "bg-gradient-to-b from-black/80 via-black/40 to-transparent"
+          ? "bg-black/90 backdrop-blur-md shadow-lg border-b border-blue-700/30"
+          : "bg-gradient-to-b from-black/90 via-black/50 to-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
-        {/* Brand / Logo */}
+        {/* 🔹 Brand / Logo */}
         <div className="flex items-center space-x-3">
           <img
             src="aicLogo.png"
             alt="Cafe Logo"
-            className="w-11 h-10 rounded-full shadow-md"
+            className="w-11 h-11 rounded-full shadow-lg border-2 border-blue-600"
           />
-          <h1 className="text-white font-bold text-xl sm:text-2xl tracking-wide">
-            Asif Internet Café
-            <span className="text-blue-400"> – Sirsi Hat</span>
+          <h1 className="text-white font-semibold text-lg sm:text-xl tracking-wide">
+            Asif Internet Café{" "}
+            <span className="text-blue-400 font-bold">– Sirsi Hat</span>
           </h1>
         </div>
 
-        {/* Desktop Menu */}
+        {/* 🔹 Desktop Menu */}
         <div className="hidden md:flex items-center space-x-8">
           {[
             { path: "/", label: "Home" },
@@ -51,14 +49,11 @@ const Navbar = () => {
             { path: "/Gallery", label: "Gallery" },
             { path: "/contact", label: "Contact" },
             { path: "/pricing", label: "Pricing" },
-            {
-              /* { path: "/BgRemover", label: "Online Bg Remove" }, */
-            },
           ].map((item) => (
             <Link
               key={item.path}
               to={item.path}
-              className={`text-gray-100 hover:text-blue-400 transition ${
+              className={`text-gray-200 hover:text-blue-400 transition-colors duration-300 ${
                 location.pathname === item.path
                   ? "text-blue-400 font-semibold"
                   : ""
@@ -69,15 +64,14 @@ const Navbar = () => {
           ))}
 
           <Link
-            key="/BgRemover"
             to="/BgRemover"
-            className="btn btn-primary btn-sm bg-blue-600 border-none hover:bg-blue-700 text-white px-4 rounded-full shadow-md"
+            className="bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white font-medium px-5 py-2 rounded-full shadow-md transition-transform transform hover:scale-105"
           >
             Online Bg Remover
           </Link>
         </div>
 
-        {/* Mobile Menu Button */}
+        {/* 🔹 Mobile Menu Button */}
         <div className="md:hidden">
           <button
             onClick={() => setIsOpen(!isOpen)}
@@ -88,19 +82,24 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Dropdown Menu */}
+      {/* 🔹 Mobile Dropdown Menu */}
       {isOpen && (
-        <div className="md:hidden bg-black/90 text-white px-6 py-4 space-y-4 border-t border-gray-700">
+        <div className="md:hidden bg-black/95 text-white px-6 py-5 space-y-5 border-t border-blue-800/40 shadow-inner">
           {[
             { path: "/", label: "Home" },
             { path: "/services", label: "Services" },
+            { path: "/Gallery", label: "Gallery" },
             { path: "/pricing", label: "Pricing" },
             { path: "/contact", label: "Contact" },
           ].map((item) => (
             <Link
               key={item.path}
               to={item.path}
-              className="block hover:text-blue-400 transition"
+              className={`block hover:text-blue-400 transition ${
+                location.pathname === item.path
+                  ? "text-blue-400 font-semibold"
+                  : ""
+              }`}
             >
               {item.label}
             </Link>
@@ -108,7 +107,7 @@ const Navbar = () => {
 
           <Link
             to="/BgRemover"
-            className="btn btn-primary w-full bg-blue-600 border-none hover:bg-blue-700 text-white rounded-full shadow-md"
+            className="block text-center bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white py-2 rounded-full shadow-md transition-transform transform hover:scale-105"
           >
             Online Bg Remover
           </Link>
