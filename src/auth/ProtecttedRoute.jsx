@@ -1,11 +1,23 @@
-import { Navigate } from "react-router-dom";
+// import { Navigate } from "react-router-dom";
 
-export default function ProtectedRoute({ children }) {
+// export default function ProtectedRoute({ children }) {
+//   const isAdmin = localStorage.getItem("adminToken");
+
+//   if (!isAdmin) {
+//     return <Navigate to="/admin/login" replace />;
+//   }
+
+//   return children;
+// }
+
+import { Navigate, Outlet } from "react-router-dom";
+
+export default function ProtectedRoute() {
   const isAdmin = localStorage.getItem("adminToken");
 
   if (!isAdmin) {
     return <Navigate to="/admin/login" replace />;
   }
 
-  return children;
+  return <Outlet />;
 }

@@ -44,7 +44,7 @@ function AppLayout() {
         <Route path="/Gallery" element={<Gallery />} />
         <Route path="/wedding-cards" element={<WeddingCards />} />
 
-        {/* ================= ADMIN ROUTES ================= */}
+        {/* ================= ADMIN ROUTES =================
         <Route path="/admin/login" element={<AdminLogin />} />
 
         <Route
@@ -62,6 +62,21 @@ function AppLayout() {
             path="wedding-cards/edit/:id"
             element={<AddEditWeddingCard />}
           />
+        </Route> */}
+        {/* ================= ADMIN ROUTES ================= */}
+
+        <Route path="/admin/login" element={<AdminLogin />} />
+
+        <Route path="/admin" element={<ProtectedRoute />}>
+          <Route element={<AdminLayout />}>
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="wedding-cards" element={<WeddingCardsAdmin />} />
+            <Route path="wedding-cards/add" element={<AddEditWeddingCard />} />
+            <Route
+              path="wedding-cards/edit/:id"
+              element={<AddEditWeddingCard />}
+            />
+          </Route>
         </Route>
       </Routes>
     </div>
