@@ -7,7 +7,7 @@ export default function AdminLogin() {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    if (email === "admin@gmail.com" && password === "admin123") {
+    if (email === "admin@gmail.com" && password === "Adil123@") {
       localStorage.setItem("adminToken", "logged-in");
       navigate("/admin/dashboard");
     } else {

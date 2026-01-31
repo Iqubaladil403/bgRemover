@@ -30,7 +30,7 @@ function AppLayout() {
   const isAdminRoute = location.pathname.startsWith("/admin");
 
   return (
-    <div className="min-h-screen bg-base-200">
+    <div className=" bg-base-200">
       {/* ✅ Navbar ONLY for USER */}
       {!isAdminRoute && <Navbar />}
 
@@ -43,27 +43,6 @@ function AppLayout() {
         <Route path="/BgRemover" element={<BgRemove />} />
         <Route path="/Gallery" element={<Gallery />} />
         <Route path="/wedding-cards" element={<WeddingCards />} />
-
-        {/* ================= ADMIN ROUTES =================
-        <Route path="/admin/login" element={<AdminLogin />} />
-
-        <Route
-          path="/admin"
-          element={
-            <ProtectedRoute>
-              <AdminLayout />
-            </ProtectedRoute>
-          }
-        >
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="wedding-cards" element={<WeddingCardsAdmin />} />
-          <Route path="wedding-cards/add" element={<AddEditWeddingCard />} />
-          <Route
-            path="wedding-cards/edit/:id"
-            element={<AddEditWeddingCard />}
-          />
-        </Route> */}
-        {/* ================= ADMIN ROUTES ================= */}
 
         <Route path="/admin/login" element={<AdminLogin />} />
 
