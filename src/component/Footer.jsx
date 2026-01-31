@@ -47,7 +47,7 @@ function Footer() {
       <div className="bg-white/20 p-6 rounded-xl shadow-lg backdrop-blur-md w-full sm:w-80">
         <p className="text-lg font-semibold text-yellow-300">Md Adil Iqubal</p>
         <p className="text-base mt-1 text-gray-100">
-          Full Stack Developer & Designer
+          Software Developer & Designer
         </p>
         <p className="text-sm mt-2">
           Passionate about building user-friendly web applications with modern 
