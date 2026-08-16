@@ -90,11 +90,11 @@ I want to order this wedding card:
       <div className="mt-3 flex items-center justify-between">
         <div>
           <span className="text-lg font-extrabold text-pink-600">
-            ₹{discountedPrice}
+            ₹{discountedPrice} <spam className="text-pink-800">प्रति 100 पीस</spam>
           </span>
           {card.discount && (
             <span className="block text-xs text-slate-400 line-through">
-              ₹{card.price}
+              ₹{card.price} 
             </span>
           )}
         </div>

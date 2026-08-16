@@ -9,6 +9,8 @@ import BgRemove from "./component/BgRemove";
 import Contact from "./component/Contact";
 import Gallery from "./component/Gallery";
 import Home from "./component/Home";
+import NikahDupatta from "./component/NikahDupatta";
+import NikahNama from "./component/NikahNama";
 import Pricing from "./component/Pricing";
 import WeddingCards from "./component/WeddingCards";
 import Navbar from "./Navbar";
@@ -43,6 +45,9 @@ function AppLayout() {
         <Route path="/BgRemover" element={<BgRemove />} />
         <Route path="/Gallery" element={<Gallery />} />
         <Route path="/wedding-cards" element={<WeddingCards />} />
+        <Route path="nikah-nama" element={<NikahNama />} />
+        <Route path="nikah-dupatta" element={<NikahDupatta />} />
+        
 
         <Route path="/admin/login" element={<AdminLogin />} />
 
